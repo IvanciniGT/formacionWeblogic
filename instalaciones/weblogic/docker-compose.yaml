@@ -9,7 +9,13 @@ services:
                           - 9002:9002
         volumes:
                           - ./domain.properties:/u01/oracle/properties/domain.properties
+        networks:
+                          - red-propia
 
+networks:
+    red-propia: # Con este nombre me refiero a la red dentro de este fichero
+        name: mi-red  # Este nombre es con el que gestiono a esta red, dentro de docker
+# docker login container-registry.oracle.com
 # docker compose up -d:   CREA Y ARRANCA LOS CONTENEDORES
 # docker compose down:  PARA Y BORRA LOS CONTENEDORES
 # docker compose start: ARRANCA LOS CONTENEDORES, si ya existen
