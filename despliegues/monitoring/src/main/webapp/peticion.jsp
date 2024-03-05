@@ -10,7 +10,7 @@ Thread.sleep(Configuracion.TIEMPO_DEMORA_JAVA);
 
 // Query a BBDD con retraso
 Context contexto = new InitialContext();
-DataSource datasource = (DataSource)contexto.lookup("jdbc/miTestDB");   // Nombre JNDI
+DataSource datasource = (DataSource)contexto.lookup("jdbc/mimysql");   // Nombre JNDI
 Connection conexion = datasource.getConnection();
 Statement statement = conexion.createStatement();
 ResultSet resultado = statement.executeQuery("SELECT SLEEP("+Configuracion.TIEMPO_DEMORA_DB+")");

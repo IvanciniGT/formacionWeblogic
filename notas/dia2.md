@@ -196,3 +196,27 @@ Si considero que voy a llegar a usar 4gbs, reservo los 4gbs de partida... para q
 Solo cambiaría este criterio si:
 - Estoy en un caso muy especial
 - Y conoczco muy bien los patrones de comportamiento de los sistemas
+
+
+Statement
+UPDATE usuarios SET nombre='Federico', apellidos='Ruiz' WHERE id=17;
+1. Lo primero que ocurre en la BBDD es que se valida el SQL
+2. Se valida que existan las tablas... y las columnas dentro de esa tablas
+3. Se valida que los tipos de datos que suministro sean los que tienen las columnas asignados
+4. Se prepara el plan de ejecución de la query.
+   La BBDD piensa la mejor estrategia para ejecutar esta query.
+5. Ejecuta la query
+
+PreparedStatement = QUERY EDICION USUARIO
+UPDATE usuarios SET nombre=?, apellidos=? WHERE id=?; (texto, texto, numero)
+1. Lo primero que ocurre en la BBDD es que se valida el SQL
+2. Se valida que existan las tablas... y las columnas dentro de esa tablas
+3. Se valida que los tipos de datos que suministro sean los que tienen las columnas asignados
+4. Se prepara el plan de ejecución de la query.
+   La BBDD piensa la mejor estrategia para ejecutar esta query.
+
+Y ya queda almacenado
+EJECUTA QUERY EDICION USUARIO (menchu, garcía, 17)
+5. Ejecuta la query
+EJECUTA QUERY EDICION USUARIO (felipe, mateo, 2347)
+5. Ejecuta la query
