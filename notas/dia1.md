@@ -346,7 +346,7 @@ El desarrollador del toad (o de mi app web) tiene 2 opciones:
 1. En su hilo de ejecución principal, abrir una conexión con la bbdd... lanzarle la query... esperar a que acabe ... y mostrar por pantalla los resultados.,
 2. Que su hilo principal abra un segundo hilo.
     - En ese segundo hilo, abrir una conexión con la bbdd... lanzarle la query... esperar a que acabe ... y mostrar por pantalla los resultados.
-    - Mientras en paralelo tiengo el hilo principal libra para otras tareas de la aplicación: Ejecutar una segunda query en paralelo... Cancelar la query que he ejecutado
+    - Mientras en paralelo tengo el hilo principal libra para otras tareas de la aplicación: Ejecutar una segunda query en paralelo... Cancelar la query que he ejecutado
 
 Las conexiones a la BBDD siempre las hacemos en hilos de ejecución paralelos al principal asociado al proceso (a mi aplciación)
 

@@ -1,0 +1,17 @@
+version: "2" # Versión del esquema YAML de docker-compose que estamos usando
+
+services:
+    weblogic:
+        container_name:     miwl
+        image:              container-registry.oracle.com/middleware/weblogic:12.2.1.4
+        ports:
+                          - 7001:7001
+                          - 9002:9002
+        volumes:
+                          - ./domain.properties:/u01/oracle/properties/domain.properties
+
+# docker compose up -d:   CREA Y ARRANCA LOS CONTENEDORES
+# docker compose down:  PARA Y BORRA LOS CONTENEDORES
+# docker compose start: ARRANCA LOS CONTENEDORES, si ya existen
+# docker compose stop:  DETIENE LOS CONTENEDORES, si están corriendo y creados
+# docker compose restart
