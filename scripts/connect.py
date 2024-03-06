@@ -1,8 +1,41 @@
 import sys
 import os
 
+def crear_propiedad(ruta, propiedad):
+    cd(ruta)
+    cmo.createProperty(propiedad)
+    
+
+def asignar_propiedad(ruta, propiedad, valor):
+    cd(ruta)
+    cmo.set(propiedad,valor)
+    
+
+def crear_datasource(nombre, jndi, url, driver, usuario, password, servidor):
+    cd('/')
+    cmo.createJDBCSystemResource(nombre)
+    
+    ruta_recurso = '/JDBCSystemResources/'+nombre+'/JDBCResource/'+nombre
+    
+    asignar_propiedad(ruta_recurso, "Name", nombre)
+    asignar_propiedad(ruta_recurso, "DatasourceType", "GENERIC")
+
+    asignar_propiedad(ruta_recurso+'/JDBCDataSourceParams/'+nombre, 'JNDINames', jarray.array([jndi], String))
+    asignar_propiedad(ruta_recurso+'/JDBCDataSourceParams/'+nombre, 'GlobalTransactionsProtocol', 'None')
+
+    asignar_propiedad(ruta_recurso+'/JDBCDriverParams/'+nombre, "Url", url)
+    asignar_propiedad(ruta_recurso+'/JDBCDriverParams/'+nombre, "DriverName", driver)
+    asignar_propiedad(ruta_recurso+'/JDBCDriverParams/'+nombre, "Password", password)
+    crear_propiedad(  ruta_recurso+'/JDBCDriverParams/'+nombre+'/Properties/'+nombre, 'user')
+    asignar_propiedad(ruta_recurso+'/JDBCDriverParams/'+nombre+'/Properties/'+nombre+'/Properties/user', 'Value', usuario)
+    
+    asignar_propiedad(ruta_recurso+'/JDBCConnectionPoolParams/'+nombre, 'TestTableName', 'SQL SELECT 1')
+    
+    asignar_propiedad('/JDBCSystemResources/'+nombre, 'Targets',jarray.array([ObjectName('com.bea:Name='+servidor,Type=Server)], ObjectName))
+    
+
 def pedir_dato_por_consola(mensaje, valor_por_defecto):
-    dato = input(mensaje + " [" + valor_por_defecto + "]: ")  
+    dato = raw_input(mensaje + " [" + valor_por_defecto + "]: ")  
     if len(dato) == 0:
         dato = valor_por_defecto
     return dato
@@ -66,6 +99,40 @@ def super_connect(usuario=None, password=None, protocolo=None, host=None, puerto
         print("Error: No ha sido posible conectarse con el servidor.")
         exit(1)
 
-super_connect()
-# Aqui haría mi mierda
+try:
+    usuario
+except NameError: # No me han pasado el usuario en un fichero properties
+    usuario = None
+try:
+    password
+except NameError: # No me han pasado el password en un fichero properties
+    password = None
+try:
+    protocolo
+except NameError: # No me han pasado el protocolo en un fichero properties
+    protocolo = None
+try:
+    host
+except NameError: # No me han pasado el host en un fichero properties
+    host = None
+try:
+    puerto
+except NameError: # No me han pasado el puerto en un fichero properties
+    puerto = None
+    
+usuario = "Weblogic"
+protocolo = "t3s"
+host = "localhost"
+puerto = 9002
+    
+super_connect(usuario, password, protocolo, host, puerto ) # Se cargan del properties
+
+crear_datasource("Mi Mysql", 
+                 "jdbc/mysql", 
+                 "jdbc:mysql://mysql:3306/basedatos", 
+                 "com.mysql.jdbc.Driver", 
+                 "usuario", 
+                 "password", 
+                 "AdminServer")
+
 disconnect()

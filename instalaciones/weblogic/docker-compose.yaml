@@ -4,7 +4,8 @@ services:
     weblogic:
         container_name:     miwl
         image:              container-registry.oracle.com/middleware/weblogic:12.2.1.4
-        #environment:
+        environment:
+            CONFIG_JVM_ARGS:             "-Dweblogic.security.TrustKeyStore=DemoTrust"
         #    DOMAIN_NAME:                base_domain
         #    ADMIN_NAME:                 AdminServer
         #    ADMIN_LISTEN_PORT:          "7001"
