@@ -4,11 +4,19 @@ services:
     weblogic:
         container_name:     miwl
         image:              container-registry.oracle.com/middleware/weblogic:12.2.1.4
+        #environment:
+        #    DOMAIN_NAME:                base_domain
+        #    ADMIN_NAME:                 AdminServer
+        #    ADMIN_LISTEN_PORT:          "7001"
+        #    PRODUCTION_MODE:            prod
+        #    ADMINISTRATION_PORT_ENABLED: "false"
+        #    ADMINISTRATION_PORT:        "9002"
         ports:
                           - 7001:7001
                           - 9002:9002
         volumes:
                           - ./domain.properties:/u01/oracle/properties/domain.properties
+                          - /home/ubuntu/environment/curso/scripts:/scripts
         networks:
                           - red-propia
 

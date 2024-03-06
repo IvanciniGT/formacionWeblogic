@@ -132,10 +132,10 @@ Sistema de archivos de un contenedor:
 ---
 Los datos del dominio al final se guardan en un fichero...
 Pero ese fichero se replica en todos los servidores que pertenecen a ese dominio.
-Como teque el fichero en uno y no en los otros, la lio parda.
+Como toque el fichero en uno y no en los otros, la lio parda.
 
 NO LO TOCAMOS "NUNCA".
-Podría ser que monte un servidor, configure su archivo de dominio... y luego lo copie a otras servidores
+Podría ser que monte un servidor, configure su archivo de dominio... y luego lo copie a otras servidores > TEMPLATE 
 
 Los cambios en ese fichero los hacemos:
 - Consola Web (NO NOS GUSTA)

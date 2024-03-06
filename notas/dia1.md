@@ -59,7 +59,7 @@ Es un lenguaje con algunas características:
                             Pego el postit en la ram (en el cuaderno) al lado de donde se ha escrito "adios"
         Llegados a este punto, el texto "hola" cuantos postit tiene al lado? Ninguno
         Se ha convertido en BASURA, ya que es un dato irrecuperable de la RAM.
-        En un momento dado, quizás si... o quizás no... entrará el Recolector de Basura de JAVA (Garbage collector) y lo eliminará,
+        En un momento dado, quizás si... o quizás no... entrará el Recolector de Basura de JAVA ( E) y lo eliminará,
         marcando esa zona de memoria como libre de nuevo... para que pueda albergar otro dato.
     
     Yo podría hacer este mismo programa en C... y forzar desde el principio a que el dato "adios" se escribierá en la RAM en la misma zona 
