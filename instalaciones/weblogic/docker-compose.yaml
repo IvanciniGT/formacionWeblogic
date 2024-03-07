@@ -18,6 +18,7 @@ services:
         volumes:
                           - ./domain.properties:/u01/oracle/properties/domain.properties
                           - /home/ubuntu/environment/curso/scripts:/scripts
+                          - /home/ubuntu/environment/datos/weblogic/dominios:/u01/oracle/user_projects/domains/
         networks:
                           - red-propia
 

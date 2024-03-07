@@ -9,7 +9,7 @@ def imprimir_mensaje_importante(mensaje):
     print(mensaje)
     print(line + "\n")
     
-def imprimir_info_datasource(nombre, jndi, url, driver, usuario, servidor):
+def imprimir_info_datasource(nombre, jndi, url, driver, usuario, servidor, cluster):
     print("-" * 20)
     print(" DataSource: %s" % nombre)
     print(" JNDI: %s" % jndi)
@@ -17,6 +17,7 @@ def imprimir_info_datasource(nombre, jndi, url, driver, usuario, servidor):
     print(" Driver: %s" % driver)
     print(" Usuario: %s" % usuario)
     print(" Servidor: %s" % servidor)
+    print(" Cluster: %s" % cluster)
 
     print("-" * 20 + "\n")
 
@@ -33,7 +34,7 @@ def asignar_propiedad(ruta, propiedad, valor):
     set(propiedad,valor)
 
 
-def crear_datasource(nombre, jndi, url, driver, usuario, password, servidor, test_query, conexionesMaximas):
+def crear_datasource(nombre, jndi, url, driver, usuario, password, test_query, conexionesMaximas,servidor, cluster):
     cd('/')
     try:
         cmo.createJDBCSystemResource(nombre)
@@ -58,7 +59,12 @@ def crear_datasource(nombre, jndi, url, driver, usuario, password, servidor, tes
     asignar_propiedad(ruta_recurso+'/JDBCConnectionPoolParams/'+nombre, 'InitialCapacity', 1)
     asignar_propiedad(ruta_recurso+'/JDBCConnectionPoolParams/'+nombre, 'MaxCapacity', conexionesMaximas)
     
-    asignar_propiedad('/JDBCSystemResources/'+nombre, 'Targets',jarray.array([ObjectName('com.bea:Name='+servidor+',Type=Server')], ObjectName))
+    if servidor is not None:
+        asignar_propiedad('/JDBCSystemResources/'+nombre, 'Targets',jarray.array([ObjectName('com.bea:Name='+servidor+',Type=Server')], ObjectName))
+        print("Asignando al servidor: "+servidor)
+    elif cluster is not None:
+        print("Asignando al cluster: "+cluster)
+        asignar_propiedad('/JDBCSystemResources/'+nombre, 'Targets',jarray.array([ObjectName('com.bea:Name='+cluster+',Type=Cluster')], ObjectName))
 
 def crear_datasources():
     imprimir_mensaje_importante("Creando datasources.")
@@ -74,26 +80,42 @@ def crear_datasources():
                 if not os.path.exists(fichero):
                     break
                 loadProperties(fichero)
+                # Identifico si me pasan cluster o servidor
+                try:
+                    global datasource_servidor # Voy a acceder una variable global llamada datasource_servidor (se habría cargado desde el fichero si existe)
+                    datasource_servidor # Accedo a ella a ver si esta definida. Si no lo está me dara un NameError, indicando que la variable no existe
+                except NameError:
+                    print("No se ha especificado un servidor para el datasource")
+                    datasource_servidor=None # La creo yo... y le pongo None
+                try:
+                    global datasource_cluster
+                    datasource_cluster
+                except NameError:
+                    print("No se ha especificado un cluster para el datasource")
+                    datasource_cluster=None
+                    
+                    
+                
                 print("Procesando fichero "+fichero)
                 imprimir_info_datasource(datasource_nombre,
                                 datasource_jndi,
                                 datasource_url,
                                 datasource_driver,
                                 datasource_usuario,
-                                datasource_servidor)
+                                datasource_servidor,
+                                datasource_cluster)
                 crear_datasource(datasource_nombre,
                                 datasource_jndi,
                                 datasource_url,
                                 datasource_driver,
                                 datasource_usuario,
                                 datasource_password,
-                                datasource_servidor,
                                 datasource_consultaDePrueba,
-                                datasource_conexionesMaximas)
+                                datasource_conexionesMaximas,
+                                datasource_servidor,
+                                datasource_cluster)
             except NameError,e:
                 print("No se ha definido la propiedad del datasource "+str(e))
-            except:
-                break
     else:
         print("No se han encontrado datasources que cargar.")
 def pedir_dato_por_consola(mensaje, valor_por_defecto):
