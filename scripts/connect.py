@@ -8,8 +8,8 @@ def crear_propiedad(ruta, propiedad):
 
 def asignar_propiedad(ruta, propiedad, valor):
     cd(ruta)
-    cmo.set(propiedad,valor)
-    
+    set(propiedad,valor)
+
 
 def crear_datasource(nombre, jndi, url, driver, usuario, password, servidor):
     cd('/')
@@ -31,8 +31,8 @@ def crear_datasource(nombre, jndi, url, driver, usuario, password, servidor):
     
     asignar_propiedad(ruta_recurso+'/JDBCConnectionPoolParams/'+nombre, 'TestTableName', 'SQL SELECT 1')
     
-    asignar_propiedad('/JDBCSystemResources/'+nombre, 'Targets',jarray.array([ObjectName('com.bea:Name='+servidor,Type=Server)], ObjectName))
-    
+    asignar_propiedad('/JDBCSystemResources/'+nombre, 'Targets',jarray.array([ObjectName('com.bea:Name='+servidor+',Type=Server')], ObjectName))
+
 
 def pedir_dato_por_consola(mensaje, valor_por_defecto):
     dato = raw_input(mensaje + " [" + valor_por_defecto + "]: ")  
@@ -82,8 +82,18 @@ def obtener_datos_conexion(usuario, password, protocolo, host, puerto):
     
     return (usuario, password, protocolo, host, puerto)
 
+def inicializar_dato(valor_fichero, valor_codigo):
+    if valor_codigo is not None:
+        return valor_codigo
+    return valor_fichero
 
-def super_connect(usuario=None, password=None, protocolo=None, host=None, puerto=None):
+def super_connect(_usuario=None, _password=None, _protocolo=None, _host=None, _puerto=None):
+    global usuario, password, protocolo, host, puerto
+    usuario = inicializar_dato(usuario, _usuario)
+    password = inicializar_dato(password, _password)
+    protocolo = inicializar_dato(protocolo, _protocolo)
+    host = inicializar_dato(host, _host)
+    puerto = inicializar_dato(puerto, _puerto)
 
     (usuario, password, protocolo, host, puerto) = obtener_datos_conexion(usuario, password, protocolo, host, puerto)
 
@@ -99,40 +109,25 @@ def super_connect(usuario=None, password=None, protocolo=None, host=None, puerto
         print("Error: No ha sido posible conectarse con el servidor.")
         exit(1)
 
-try:
-    usuario
-except NameError: # No me han pasado el usuario en un fichero properties
-    usuario = None
-try:
-    password
-except NameError: # No me han pasado el password en un fichero properties
-    password = None
-try:
-    protocolo
-except NameError: # No me han pasado el protocolo en un fichero properties
-    protocolo = None
-try:
-    host
-except NameError: # No me han pasado el host en un fichero properties
-    host = None
-try:
-    puerto
-except NameError: # No me han pasado el puerto en un fichero properties
-    puerto = None
-    
-usuario = "Weblogic"
-protocolo = "t3s"
-host = "localhost"
-puerto = 9002
-    
-super_connect(usuario, password, protocolo, host, puerto ) # Se cargan del properties
+super_connect(_usuario="Weblogic", _protocolo="t3s", _host="localhost", _puerto=9002) 
 
-crear_datasource("Mi Mysql", 
-                 "jdbc/mysql", 
-                 "jdbc:mysql://mysql:3306/basedatos", 
-                 "com.mysql.jdbc.Driver", 
-                 "usuario", 
-                 "password", 
-                 "AdminServer")
-
+edit()
+startEdit()
+try:
+    crear_datasource("Mi Mysql", 
+                     "jdbc/mysql", 
+                     "jdbc:mysql://mysql:3306/basedatos", 
+                     "com.mysql.jdbc.Driver", 
+                     "usuario", 
+                     "password", 
+                     "AdminServer")
+        
+    save()
+    activate()
+except:
+    print("Ocurrio un error:")
+    import traceback
+    apply(traceback.print_exception, sys.exc_info())
+    stopEdit('y')
+    
 disconnect()
