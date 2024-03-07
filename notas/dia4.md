@@ -77,6 +77,41 @@ Y son redes físicas diferentes
 
 Es una agrupación de instancias, que me permite: 
 - Hacer despliegues, aplicar configuraciones a todas a la vez
+Lo montamos para tener HA/Escalabilidad
+
+Por delante de un cluster siempre necesito: UN BALANCEADOR DE CARGA
+
+> Pregunta: Es WEBLogic un Balanceador de carga?
+
+Para el tráfico HTTP: NO hace balanceo de carga
+Puedo tener una cola de mensajería JMS: SI
+Puedo tener un EJB (Enterprise Java Bean): SI
+    Son un programita que permite acceder a información por múltiples apps que tuvera desplegadas.
+
+Todo lo que es interno a Weblogic, se lo come el Weblogic.. y ahí SI HACE BALANCEO DE CARGA.
+
+Para HTTP necesito un balanceador externo:
+- Nginx
+- Apache
+- Apache tenao de Oracle: OHL
+- Una cutre-aplicación que me da la gente de oracle y que puedo montar en Weblogic: RUINA !!!!
+    Lo puedo usar para una prueba cutre.
+  Esa app no tiene HA. Solo instalo 1 copia en 1 UNICA instancia: cuya dirección es la que entrego a los cliente.
+  Podría hacer 2 copias de esa app y montarlas en 2 host independientes? SI
+  Pero... quien decide si se llama a 1 instancia o a la otra? Un balanceador de carga... que montaría externo.
+  Pa eso, paso de la aplciacioncita.
+
+Si monto un nginx... si se cae, sigo jodido:
+Voy a montar 2 nginx o más
+- VIPA (IP Virtual que salta de una máquina a otra si una se cae... proceso de tipo HEARTBEAT)
+    MAQUINA 1
+        NIC: eth0 - IP (Dinámica)
+             eth1 - VIPA
+    MAQUINA 2
+        NIC: eth0 - IP (Dinámica)
+             eth1 - VIPA * Desactivado  
+        Monto un programa que mire si el nginx de la maquina 1 está funcionando. Si no... activo eth1
+- Balanceo TCP: LAYER2
 
 # Configuración del pool de ejecutores
 
