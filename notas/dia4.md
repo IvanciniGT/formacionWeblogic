@@ -178,3 +178,13 @@ Pero he perdido una instancia para todas las apps
 2. Creamos un cluster con ese nuevo y el de antes
 3. Desplegamos una app. BBDD a nivel de cluster
 WLST. Dar de alta el recurso a nivel de cluster
+
+---
+
+
+
+
+
+
+
+

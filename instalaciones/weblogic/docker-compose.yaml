@@ -21,7 +21,26 @@ services:
                           - /home/ubuntu/environment/datos/weblogic/dominios:/u01/oracle/user_projects/domains/
         networks:
                           - red-propia
-
+        restart:            always
+        
+    weblogic2:
+        container_name:     miwl2
+        image:              container-registry.oracle.com/middleware/weblogic:12.2.1.4
+        environment:
+            CONFIG_JVM_ARGS:             "-Dweblogic.security.TrustKeyStore=DemoTrust"
+        ports:
+                          - 7031:7001
+                          - 7041:7001
+                          - 9042:9002
+                          - 9032:9002
+        volumes:
+                          - ./domain.properties:/u01/oracle/properties/domain.properties
+                          - /home/ubuntu/environment/curso/scripts:/scripts
+                          - /home/ubuntu/environment/datos/weblogic/dominios2:/u01/oracle/user_projects/domains/
+        networks:
+                          - red-propia
+        command:            /u01/oracle/user_projects/domains/base_domain/bin/startNodeManager.sh
+        restart:            always
 networks:
     red-propia: # Con este nombre me refiero a la red dentro de este fichero
         name: mi-red  # Este nombre es con el que gestiono a esta red, dentro de docker
