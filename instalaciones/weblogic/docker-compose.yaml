@@ -14,6 +14,7 @@ services:
         #    ADMINISTRATION_PORT:        "9002"
         ports:
                           - 7001:7001
+                          - 7011:7011
                           - 9002:9002
         volumes:
                           - ./domain.properties:/u01/oracle/properties/domain.properties
